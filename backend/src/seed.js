@@ -1,0 +1,491 @@
+/**
+ * TrustLink AI - Database Seeder
+ * Populates realistic demonstration data for Scheduled Tribe (ST) Scholarship Management System
+ */
+
+const bcrypt = require('bcryptjs');
+const db = require('./config/db');
+
+async function seedDatabase() {
+  console.log('Seeding TrustLink AI database with demo records...');
+
+  const passwordHash = bcrypt.hashSync('123456', 10);
+
+  // 1. Seed Users
+  const users = [
+    {
+      id: 'usr_student_rahul',
+      email: 'student@trustlink.demo',
+      name: 'Rahul Kumar',
+      role: 'STUDENT',
+      phone: '+91 98765 43210',
+      password: passwordHash,
+      caste: 'Munda',
+      state: 'Jharkhand',
+      district: 'Ranchi',
+      aadhaarNumber: 'XXXX-XXXX-8912',
+      profileCompletion: 85
+    },
+    {
+      id: 'usr_student_sunita',
+      email: 'sunita.oraon@trustlink.demo',
+      name: 'Sunita Oraon',
+      role: 'STUDENT',
+      phone: '+91 98765 12345',
+      password: passwordHash,
+      caste: 'Oraon',
+      state: 'Odisha',
+      district: 'Mayurbhanj',
+      aadhaarNumber: 'XXXX-XXXX-4532',
+      profileCompletion: 92
+    },
+    {
+      id: 'usr_student_birsa',
+      email: 'birsa.munda@trustlink.demo',
+      name: 'Birsa Munda',
+      role: 'STUDENT',
+      phone: '+91 98765 67890',
+      password: passwordHash,
+      caste: 'Munda',
+      state: 'Chhattisgarh',
+      district: 'Bastar',
+      aadhaarNumber: 'XXXX-XXXX-9901',
+      profileCompletion: 100
+    },
+    {
+      id: 'usr_officer_rajesh',
+      email: 'officer@trustlink.demo',
+      name: 'Dr. Rajesh Sharma',
+      role: 'OFFICER',
+      phone: '+91 94311 00221',
+      password: passwordHash,
+      department: 'Tribal Welfare Department, Govt. of India',
+      designation: 'Senior Verification Officer',
+      jurisdictionState: 'All States'
+    },
+    {
+      id: 'usr_admin_mota',
+      email: 'admin@trustlink.demo',
+      name: 'Priya Verma',
+      role: 'ADMIN',
+      phone: '+91 98100 99887',
+      password: passwordHash,
+      department: 'Ministry of Tribal Affairs (MoTA)',
+      designation: 'Chief Director (Scholarships)'
+    }
+  ];
+  db.saveCollection('users', users);
+
+  // 2. Seed Student Profiles
+  const studentProfiles = [
+    {
+      userId: 'usr_student_rahul',
+      fatherName: 'Mangal Kumar',
+      annualIncome: 180000,
+      gender: 'Male',
+      dob: '2004-05-14',
+      institution: 'Ranchi University, Jharkhand',
+      course: 'Bachelor of Technology (Computer Science)',
+      academicYear: '2nd Year',
+      previousPercentage: 78.5,
+      bankName: 'State Bank of India',
+      accountNumber: '38910023491',
+      ifscCode: 'SBIN0000201',
+      isAadhaarSeeded: true
+    },
+    {
+      userId: 'usr_student_sunita',
+      fatherName: 'Suku Oraon',
+      annualIncome: 210000,
+      gender: 'Female',
+      dob: '2001-11-20',
+      institution: 'Utkal University, Bhubaneswar',
+      course: 'Ph.D. in Environmental Science',
+      academicYear: '1st Year',
+      previousPercentage: 84.0,
+      bankName: 'Bank of Baroda',
+      accountNumber: '56210011982',
+      ifscCode: 'BARB0MAYURB',
+      isAadhaarSeeded: true
+    },
+    {
+      userId: 'usr_student_birsa',
+      fatherName: 'Somra Munda',
+      annualIncome: 350000,
+      gender: 'Male',
+      dob: '2003-03-10',
+      institution: 'IIT Kharagpur',
+      course: 'B.Tech in Mining Engineering',
+      academicYear: '3rd Year',
+      previousPercentage: 88.2,
+      bankName: 'Punjab National Bank',
+      accountNumber: '09120034112',
+      ifscCode: 'PUNB0192000',
+      isAadhaarSeeded: true
+    }
+  ];
+  db.saveCollection('studentProfiles', studentProfiles);
+
+  // 3. Seed Schemes
+  const schemes = [
+    {
+      id: 'SCH-001',
+      code: 'PRE_MATRIC_ST',
+      name: 'Pre-Matric Scholarship for ST Students',
+      category: 'Pre-Matric',
+      targetAudience: 'ST Students in Class IX & X',
+      description: 'Financial assistance to Scheduled Tribe students studying in classes IX and X to minimize drop-out rates and build a solid educational foundation.',
+      maxAnnualIncome: 250000,
+      allowedCategories: ['ST'],
+      minPercentage: 45,
+      financialBenefit: 'Day Scholar: ₹225/month | Hosteller: ₹525/month + Book Grant ₹750/year',
+      totalBeneficiariesCovered: '18.5 Lakhs',
+      requiredDocuments: [
+        { type: 'CASTE_CERT', title: 'ST Caste Certificate' },
+        { type: 'INCOME_CERT', title: 'Annual Family Income Certificate' },
+        { type: 'MARKSHEET', title: 'Previous Class Marksheet' },
+        { type: 'BONAFIDE', title: 'School Bonafide Certificate' }
+      ]
+    },
+    {
+      id: 'SCH-002',
+      code: 'POST_MATRIC_ST',
+      name: 'Post-Matric Scholarship for ST Students',
+      category: 'Post-Matric',
+      targetAudience: 'ST Students pursuing XI, XII, Graduation, PG & Professional Courses',
+      description: 'Centrally Sponsored Scheme providing complete fee coverage and maintenance allowances for post-secondary education across India.',
+      maxAnnualIncome: 250000,
+      allowedCategories: ['ST'],
+      minPercentage: 50,
+      financialBenefit: 'Full Tuition Fee Reimbursement + Monthly Maintenance Allowance up to ₹1,200/month',
+      totalBeneficiariesCovered: '11.2 Lakhs',
+      requiredDocuments: [
+        { type: 'CASTE_CERT', title: 'ST Caste Certificate' },
+        { type: 'INCOME_CERT', title: 'Annual Family Income Certificate' },
+        { type: 'MARKSHEET', title: 'Class X/XII/Graduation Marksheet' },
+        { type: 'FEE_RECEIPT', title: 'College Fee Receipt & Admission Proof' },
+        { type: 'BANK_PASSBOOK', title: 'Aadhaar-Seeded Bank Passbook' }
+      ]
+    },
+    {
+      id: 'SCH-003',
+      code: 'TOP_CLASS_ST',
+      name: 'Top Class Education Scheme for ST Students',
+      category: 'Higher Education',
+      targetAudience: 'ST Students admitted into notified premier institutes (IIT, IIM, NIT, AIIMS, NLU)',
+      description: 'Encouraging meritorious ST students to pursue higher education in top-tier national institutions with full financial backing.',
+      maxAnnualIncome: 800000,
+      allowedCategories: ['ST'],
+      minPercentage: 60,
+      financialBenefit: 'Full Tuition Fee up to ₹2.00 Lakh/year + Living Allowance ₹3,000/month + One-time Computer Grant ₹45,000',
+      totalBeneficiariesCovered: '1,000 Slots',
+      requiredDocuments: [
+        { type: 'CASTE_CERT', title: 'ST Caste Certificate' },
+        { type: 'INCOME_CERT', title: 'Income Certificate (Competent Authority)' },
+        { type: 'ADMISSION_LETTER', title: 'Premier Institute Admission Letter' },
+        { type: 'FEE_STRUCTURE', title: 'Institute Authorized Fee Structure' },
+        { type: 'MARKSHEET', title: 'JEE / NEET / Entrance Scorecard' }
+      ]
+    },
+    {
+      id: 'SCH-004',
+      code: 'NFST_FELLOWSHIP',
+      name: 'National Fellowship for ST Students (NFST)',
+      category: 'Research Fellowship',
+      targetAudience: 'ST Candidates pursuing M.Phil. and Ph.D. degrees',
+      description: 'Central sector scheme providing 750 annual research fellowships for advanced research scholars in science, humanities and social sciences.',
+      maxAnnualIncome: 600000,
+      allowedCategories: ['ST'],
+      minPercentage: 55,
+      financialBenefit: 'JRF: ₹31,000/month | SRF: ₹35,000/month + HRA + Contingency Grant ₹20,500/year',
+      totalBeneficiariesCovered: '750 Slots / Year',
+      requiredDocuments: [
+        { type: 'CASTE_CERT', title: 'ST Caste Certificate' },
+        { type: 'INCOME_CERT', title: 'Income Certificate' },
+        { type: 'PG_DEGREE', title: 'Master’s Degree Certificate & Marksheet' },
+        { type: 'SYNOPSIS', title: 'Ph.D. Research Proposal / Synopsis' },
+        { type: 'GUIDE_LETTER', title: 'Research Guide Acceptance Letter' }
+      ]
+    },
+    {
+      id: 'SCH-005',
+      code: 'NOS_OVERSEAS',
+      name: 'National Overseas Scholarship for ST Students (NOS)',
+      category: 'Overseas Study',
+      targetAudience: 'ST Students for Master’s & Ph.D. in Top Foreign Universities',
+      description: 'Provides financial assistance to selected ST students for pursuing higher studies abroad in prestigious international institutions.',
+      maxAnnualIncome: 800000,
+      maxAge: 35,
+      allowedCategories: ['ST'],
+      minPercentage: 60,
+      financialBenefit: 'Annual Maintenance Allowance USD 15,400 / GBP 9,900 + Actual Tuition Fees + Air Passage + Visa Fees',
+      totalBeneficiariesCovered: '20 Awards / Year',
+      requiredDocuments: [
+        { type: 'CASTE_CERT', title: 'ST Caste Certificate' },
+        { type: 'INCOME_CERT', title: 'Income Certificate' },
+        { type: 'PASSPORT', title: 'Valid Indian Passport Copy' },
+        { type: 'OFFER_LETTER', title: 'Unconditional Admission Offer (QS Top 500 University)' },
+        { type: 'GRE_IELTS', title: 'IELTS / TOEFL Scorecard' }
+      ]
+    }
+  ];
+  db.saveCollection('schemes', schemes);
+
+  // 4. Seed Applications
+  const applications = [
+    {
+      id: 'APP-2026-ST-8821',
+      userId: 'usr_student_rahul',
+      studentName: 'Rahul Kumar',
+      schemeId: 'SCH-002',
+      schemeName: 'Post-Matric Scholarship for ST Students',
+      schemeCode: 'POST_MATRIC_ST',
+      state: 'Jharkhand',
+      district: 'Ranchi',
+      institution: 'Ranchi University',
+      course: 'B.Tech Computer Science',
+      annualIncome: 180000,
+      previousPercentage: 78.5,
+      status: 'DEFICIENCY_RAISED',
+      eligibilityScore: 68,
+      isEligible: false,
+      deficiencyCount: 1,
+      currentStage: 'Document Verification',
+      submittedAt: '2026-09-15T10:30:00.000Z',
+      riskFlag: 'Action Required',
+      demoFlag: true
+    },
+    {
+      id: 'APP-2026-ST-8822',
+      userId: 'usr_student_sunita',
+      studentName: 'Sunita Oraon',
+      schemeId: 'SCH-004',
+      schemeName: 'National Fellowship for ST Students (NFST)',
+      schemeCode: 'NFST_FELLOWSHIP',
+      state: 'Odisha',
+      district: 'Mayurbhanj',
+      institution: 'Utkal University, Bhubaneswar',
+      course: 'Ph.D. Environmental Science',
+      annualIncome: 210000,
+      previousPercentage: 84.0,
+      status: 'UNDER_VERIFICATION',
+      eligibilityScore: 96,
+      isEligible: true,
+      deficiencyCount: 0,
+      currentStage: 'AI Scanning & Rule Check',
+      submittedAt: '2026-09-22T14:15:00.000Z',
+      riskFlag: 'Low Risk',
+      demoFlag: true
+    },
+    {
+      id: 'APP-2026-ST-8823',
+      userId: 'usr_student_birsa',
+      studentName: 'Birsa Munda',
+      schemeId: 'SCH-003',
+      schemeName: 'Top Class Education Scheme for ST Students',
+      schemeCode: 'TOP_CLASS_ST',
+      state: 'Chhattisgarh',
+      district: 'Bastar',
+      institution: 'IIT Kharagpur',
+      course: 'B.Tech Mining Engineering',
+      annualIncome: 350000,
+      previousPercentage: 88.2,
+      status: 'OFFICER_REVIEW',
+      eligibilityScore: 98,
+      isEligible: true,
+      deficiencyCount: 0,
+      currentStage: 'Officer Decision Pending',
+      submittedAt: '2026-09-18T09:00:00.000Z',
+      riskFlag: 'Recommended',
+      demoFlag: true
+    },
+    {
+      id: 'APP-2026-ST-8824',
+      userId: 'usr_student_anita',
+      studentName: 'Anita Hembrom',
+      schemeId: 'SCH-005',
+      schemeName: 'National Overseas Scholarship for ST Students (NOS)',
+      schemeCode: 'NOS_OVERSEAS',
+      state: 'Assam',
+      district: 'Kokrajhar',
+      institution: 'University of Edinburgh, UK',
+      course: 'M.Sc. Renewable Energy Systems',
+      annualIncome: 420000,
+      previousPercentage: 86.5,
+      status: 'SELECTED',
+      eligibilityScore: 100,
+      isEligible: true,
+      deficiencyCount: 0,
+      currentStage: 'Disbursement Initiated',
+      submittedAt: '2026-08-10T11:20:00.000Z',
+      riskFlag: 'Sanctioned',
+      demoFlag: true
+    },
+    {
+      id: 'APP-2026-ST-8825',
+      userId: 'usr_student_ramesh',
+      studentName: 'Ramesh Soren',
+      schemeId: 'SCH-001',
+      schemeName: 'Pre-Matric Scholarship for ST Students',
+      schemeCode: 'PRE_MATRIC_ST',
+      state: 'West Bengal',
+      district: 'Purulia',
+      institution: 'Purulia Zilla School',
+      course: 'Class X',
+      annualIncome: 320000,
+      previousPercentage: 62.0,
+      status: 'REJECTED',
+      eligibilityScore: 40,
+      isEligible: false,
+      deficiencyCount: 1,
+      currentStage: 'Application Rejected',
+      submittedAt: '2026-09-01T16:45:00.000Z',
+      riskFlag: 'Ineligible Income',
+      demoFlag: true
+    }
+  ];
+  db.saveCollection('applications', applications);
+
+  // 5. Seed Documents
+  const documents = [
+    {
+      id: 'doc_8821_income',
+      applicationId: 'APP-2026-ST-8821',
+      type: 'INCOME_CERT',
+      name: 'Income_Certificate_2024_Expired.pdf',
+      verificationStatus: 'DEFICIENT',
+      confidenceScore: 94,
+      isExpired: true,
+      deficiencyReason: 'Income Certificate is expired (Issued 14/08/2024). A valid current fiscal year income certificate is required.',
+      extractedFields: {
+        'Applicant Name': { value: 'Rahul Kumar', confidence: 98 },
+        'Annual Family Income': { value: '₹1,80,000', confidence: 97 },
+        'Issue Date': { value: '14/08/2024', confidence: 95 },
+        'Issuing Authority': { value: 'Tehsildar Ranchi', confidence: 96 }
+      }
+    },
+    {
+      id: 'doc_8821_caste',
+      applicationId: 'APP-2026-ST-8821',
+      type: 'CASTE_CERT',
+      name: 'ST_Caste_Certificate_Munda.pdf',
+      verificationStatus: 'VERIFIED',
+      confidenceScore: 99,
+      isExpired: false,
+      extractedFields: {
+        'Candidate Name': { value: 'Rahul Kumar', confidence: 99 },
+        'Caste/Tribe': { value: 'Munda (Scheduled Tribe)', confidence: 98 },
+        'Certificate Number': { value: 'ST-JH-2022-90128', confidence: 99 }
+      }
+    },
+    {
+      id: 'doc_8822_caste',
+      applicationId: 'APP-2026-ST-8822',
+      type: 'CASTE_CERT',
+      name: 'ST_Certificate_Sunita_Oraon.pdf',
+      verificationStatus: 'VERIFIED',
+      confidenceScore: 98,
+      isExpired: false,
+      extractedFields: {
+        'Candidate Name': { value: 'Sunita Oraon', confidence: 99 },
+        'Tribe': { value: 'Oraon (ST)', confidence: 97 }
+      }
+    }
+  ];
+  db.saveCollection('documents', documents);
+
+  // 6. Seed Deficiencies
+  const deficiencies = [
+    {
+      id: 'def_8821_01',
+      applicationId: 'APP-2026-ST-8821',
+      studentId: 'usr_student_rahul',
+      documentId: 'doc_8821_income',
+      documentType: 'INCOME_CERT',
+      documentName: 'Income_Certificate_2024_Expired.pdf',
+      title: 'Expired Income Certificate',
+      issue: 'The uploaded Income Certificate was issued on 14/08/2024 and expired prior to the 2026-27 academic session.',
+      actionRequired: 'Please upload a valid Income Certificate issued by Tehsildar / SDO after April 1, 2026.',
+      status: 'OPEN',
+      createdAt: '2026-09-16T11:00:00.000Z'
+    }
+  ];
+  db.saveCollection('deficiencies', deficiencies);
+
+  // 7. Seed Disbursements
+  const disbursements = [
+    {
+      id: 'disb_8824_01',
+      applicationId: 'APP-2026-ST-8824',
+      studentName: 'Anita Hembrom',
+      schemeName: 'National Overseas Scholarship (NOS)',
+      sanctionedAmount: 1250000,
+      disbursementStatus: 'DISBURSED',
+      transactionReference: 'DBT-PFMS-2026-90812371',
+      paymentDate: '2026-09-10T14:30:00.000Z',
+      bankName: 'State Bank of India',
+      accountNumber: 'XXXX-XXXX-9081',
+      isDemoTransaction: true
+    }
+  ];
+  db.saveCollection('disbursements', disbursements);
+
+  // 8. Seed Audit Logs
+  const auditLogs = [
+    {
+      id: 'log_01',
+      timestamp: '2026-09-15T10:30:00.000Z',
+      action: 'Application Submitted',
+      performedBy: 'Rahul Kumar (Student)',
+      applicationId: 'APP-2026-ST-8821',
+      status: 'SUCCESS',
+      details: 'Submitted application for Post-Matric Scholarship for ST Students'
+    },
+    {
+      id: 'log_02',
+      timestamp: '2026-09-15T10:32:00.000Z',
+      action: 'AI Verification Completed',
+      performedBy: 'ScholarLink AI Engine',
+      applicationId: 'APP-2026-ST-8821',
+      status: 'DEFICIENCY_FLAGGED',
+      details: 'Flagged expired income certificate document (Issue date: 14/08/2024)'
+    },
+    {
+      id: 'log_03',
+      timestamp: '2026-09-16T11:00:00.000Z',
+      action: 'Deficiency Raised',
+      performedBy: 'Dr. Rajesh Sharma (Verification Officer)',
+      applicationId: 'APP-2026-ST-8821',
+      status: 'ACTION_REQUIRED',
+      details: 'Raised deficiency notice for Income Certificate resubmission'
+    }
+  ];
+  db.saveCollection('auditLogs', auditLogs);
+
+  // 9. Seed Notifications
+  const notifications = [
+    {
+      id: 'notif_01',
+      userId: 'usr_student_rahul',
+      title: 'Action Required: Deficiency Raised',
+      message: 'Your application APP-2026-ST-8821 requires an updated Income Certificate. Please resolve this to proceed.',
+      type: 'DEFICIENCY',
+      read: false,
+      createdAt: '2026-09-16T11:00:00.000Z'
+    },
+    {
+      id: 'notif_02',
+      userId: 'usr_student_sunita',
+      title: 'AI Verification Passed',
+      message: 'Your documents for NFST Fellowship passed AI scanning with 96% match. Application assigned to verification officer.',
+      type: 'INFO',
+      read: true,
+      createdAt: '2026-09-22T14:20:00.000Z'
+    }
+  ];
+  db.saveCollection('notifications', notifications);
+
+  console.log('Database seeded successfully!');
+}
+
+module.exports = seedDatabase;
